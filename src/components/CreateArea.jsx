@@ -1,6 +1,12 @@
 import React, { useState } from "react";
+import AddIcon from "@material-ui/icons/Add";
+// Floating action button
+import Fab from '@material-ui/core/Fab';
+import Zoom from "@material-ui/core/Zoom";
+
 
 function CreateArea(props) {
+  const [isExpanded, setExpanded] = useState(false);
   //we have two inputs use object
   const [note, setNote] = useState({
     title: "",
@@ -21,24 +27,36 @@ function CreateArea(props) {
     setNote({ title: "", content: "" });
     event.preventDefault();
   }
+
+  function expand() {
+    setExpanded(true);
+  }
   return (
     <div>
-      <form>
-        <input
+      <form className="create-note">
+        {isExpanded && (
+          <input
           name="title"
           value={note.title}
           onChange={handleChange}
           placeholder="Title"
         />
+        )}
         <textarea
+          onClick={expand}
           name="content"
           value={note.content}
           onChange={handleChange}
           placeholder="Take a note..."
-          rows="3"
+          rows={isExpanded ? 3 : 1}
         />
+
         {/* pass note to app.js through button */}
-        <button onClick={submitNote}>Add</button>
+        <Zoom in={isExpanded}>
+        <Fab onClick={submitNote}>
+          <AddIcon />
+        </Fab>
+        </Zoom>
       </form>
     </div>
   );
